@@ -12,6 +12,7 @@ let package = Package(
             targets: ["PointVector"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/UXJon/Angle.git", from: "1.0.0"),
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
@@ -20,7 +21,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "PointVector",
-            dependencies: []),
+            dependencies: ["Angle"]),
         .testTarget(
             name: "PointVectorTests",
             dependencies: ["PointVector"]),

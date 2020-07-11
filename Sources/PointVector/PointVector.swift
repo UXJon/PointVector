@@ -130,6 +130,15 @@ public struct PointVector {
         return PointVector(origin: origin, vector: vector.rotated(by: angle))
     }
     
+    ///The closest point along the vector to the given point
+    ///- Parameter point: A CGPoint
+    ///- Returns: The CGPoint along the vector which is closest to the given point
+    public func closestPoint(to point:CGPoint) -> CGPoint {
+        ///https://forum.unity.com/threads/how-do-i-find-the-closest-point-on-a-line.340058/
+        let d = CGVector(start: origin, end: point).dotProduct(vector)
+        return self.point(atDistance: d)
+    }
+    
     ///Calculates the point along the vector which intersects a given y value (returns nil if the vector is horizontal)
     ///- Parameter y: The y value to intersect
     ///- Parameter allowInverse: True if the intesection is allowed to be found behind the vector. Default is true.

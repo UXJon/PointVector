@@ -190,7 +190,7 @@ extension CGVector:AdditiveArithmetic {
 
 //MARK: - Mult/Divide by Scalar
 
-extension CGVector {
+public extension CGVector {
     ///Multiply by the given scalar value
     static func * (vec:CGVector, scalar:CGFloat)->CGVector {
         return CGVector(dx: vec.dx * scalar, dy: vec.dy * scalar)
@@ -208,7 +208,7 @@ extension CGVector {
     
 }
 
-extension CGVector {
+public extension CGVector {
     
     ///Create a CGVector with the given length and angle from the given reference vector
     init(length:CGFloat = 1.0, angle:Angle, reference:CGVector) {

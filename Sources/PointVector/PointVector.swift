@@ -95,6 +95,15 @@ public struct PointVector {
         return self.withOrigin(atDistance: distance).parallelPoints(separation: separation)
     }
     
+    public func withAngle(_ angle:Angle) -> PointVector {
+        return PointVector(origin: self.origin, angle: angle)
+    }
+    
+    ///A new PointVector with it's origin at the given point
+    public func withOrigin(at pt:CGPoint) -> PointVector {
+        return PointVector(origin: pt, angle: self.angle)
+    }
+    
     ///A new PointVector with it's origin at the given distance along the vector
     public func withOrigin(atDistance distance:CGFloat) -> PointVector {
         return PointVector(origin: self.point(atDistance: distance), vector: vector)

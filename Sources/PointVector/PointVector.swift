@@ -187,41 +187,41 @@ public struct PointVector {
     ///- Parameter rect: The rect to intersect
     ///- Returns: A two-tuple of points which intersect or nil if no intersection exists.
     public func pointsIntersecting(rect:CGRect) -> (CGPoint,CGPoint)? {
-        guard let leftPt = pointIntersecting(vertical: rect.minX) else{
+        guard let leftPt = pointIntersecting(x: rect.minX) else{
             ///Line is vertical
             if origin.x >= rect.minX && origin.x <= rect.maxX { //If it intersects rect
                 return (CGPoint(x: origin.x, y: rect.minY), CGPoint(x: origin.x, y: rect.maxY))
             }
             return nil
         }
-        let rightPt = pointIntersecting(vertical: rect.maxX)!
+        let rightPt = pointIntersecting(y: rect.maxX)!
         
         if leftPt.y < rect.minY { //Line intersects left above rect
             guard rightPt.y >= rect.minY else {return nil} //Line passes entirely above rect
-            let topPt = pointIntersecting(horizontal: rect.minY)! //Has to intersect top
+            let topPt = pointIntersecting(y: rect.minY)! //Has to intersect top
             if rightPt.y <= rect.maxY {
                 return (topPt,rightPt) //Intersect on top and right sides
             }
-            let botPt = pointIntersecting(horizontal: rect.maxY)! //Has to intersect bottom
+            let botPt = pointIntersecting(y: rect.maxY)! //Has to intersect bottom
             return (topPt,botPt)
             
         }else if leftPt.y > rect.maxY { //Line intersects left below rect
             guard rightPt.y <= rect.maxY else {return nil} //line passes entirely below rect
-            let botPt = pointIntersecting(horizontal: rect.maxY)! //Has to intersect bottom
+            let botPt = pointIntersecting(y: rect.maxY)! //Has to intersect bottom
             if rightPt.y >= rect.minY {
                 return (botPt,rightPt) //Intersect on bottom and right sides
             }
-            let topPt = pointIntersecting(horizontal: rect.minY)! //Has to intersect top
+            let topPt = pointIntersecting(y: rect.minY)! //Has to intersect top
             return (topPt,botPt)
         }
         
         ///Intersects left side of rect
         if rightPt.y < rect.minY {
-            let topPt = pointIntersecting(horizontal: rect.minY)! //Must intersect top
+            let topPt = pointIntersecting(y: rect.minY)! //Must intersect top
             return (leftPt,topPt)
             
         }else if rightPt.y > rect.maxY {
-            let botPt = pointIntersecting(horizontal: rect.maxY)! //Must intersect bottom
+            let botPt = pointIntersecting(y: rect.maxY)! //Must intersect bottom
             return (leftPt,botPt)
         }
         
@@ -229,7 +229,7 @@ public struct PointVector {
     }
     
     ///Calculates the interection point where the lines along the vectors intersect
-    func pointIntersecting(vector other:PointVector) -> CGFloat? {
+    func pointIntersecting(vector other:PointVector) -> CGPoint? {
         let determinate = self.vector.dx * other.vector.dy - other.vector.dx * self.vector.dy
         guard determinate != 0 else {return nil} //Parallel
         

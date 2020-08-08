@@ -229,7 +229,7 @@ public struct PointVector {
     }
     
     ///Calculates the interection point where the lines along the vectors intersect
-    func pointIntersecting(vector other:PointVector) -> CGPoint? {
+    public func pointIntersecting(vector other:PointVector) -> CGPoint? {
         let determinate = self.vector.dx * other.vector.dy - other.vector.dx * self.vector.dy
         guard determinate != 0 else {return nil} //Parallel
         

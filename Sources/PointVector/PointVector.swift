@@ -46,6 +46,16 @@ public struct PointVector {
         }
     }
     
+    ///Returns true if the given vector is parallel
+    func isParallel(to vector:PointVector) -> Bool {
+        self.isParallel(to: vector.angle)
+    }
+    
+    ///Returns true if the given angle runs parallel to this vector
+    func isParallel(to angle:Angle) -> Bool {
+        return self.angle == angle || self.inverse.angle == angle
+    }
+    
     ///The end point of the vector
     public var endPoint:CGPoint {
         get{vector.point(from: origin)}
@@ -152,7 +162,7 @@ public struct PointVector {
     ///- Parameter y: The y value to intersect
     ///- Parameter allowInverse: True if the intesection is allowed to be found behind the vector. Default is true.
     ///- Returns: The point of intersection or nil if no intersection exists
-    public func pointIntersecting(horizontal y:CGFloat, allowInverse:Bool = true) -> CGPoint? {
+    public func pointIntersecting(y:CGFloat, allowInverse:Bool = true) -> CGPoint? {
         guard vector.dy != 0 else {return nil}///The vector is horizontal and will never intersect another horizontal line (or will infinitely intersect)
         let dist = y - origin.y
         guard dist >= 0 || allowInverse else {return nil}
@@ -163,7 +173,7 @@ public struct PointVector {
     ///Calculates the point along the vector which intersects a given x value (returns nil if the vector is vertical)
     ///- Parameter x: The x value to intersect
     ///- Returns: The point of intersection or nil if no intersection exists
-    public func pointIntersecting(vertical x:CGFloat, allowInverse:Bool = true) -> CGPoint? {
+    public func pointIntersecting(x:CGFloat, allowInverse:Bool = true) -> CGPoint? {
         guard vector.dx != 0 else {
             return nil ///The vector is vertical and will never intersect another vertical line (or will infinitely intersect)
         }
@@ -216,6 +226,20 @@ public struct PointVector {
         }
         
         return (leftPt,rightPt)
+    }
+    
+    ///Calculates the interection point where the lines along the vectors intersect
+    func pointIntersecting(vector other:PointVector) -> CGFloat? {
+        let determinate = self.vector.dx * other.vector.dy - other.vector.dx * self.vector.dy
+        guard determinate != 0 else {return nil} //Parallel
+        
+        let c1 = self.vector.dy * self.origin.x + self.vector.dx * self.origin.y
+        let c2 = other.vector.dy * other.origin.x + other.vector.dx * other.origin.y
+        
+        let x = (other.vector.dx * c1 - self.vector.dx * c2)/determinate
+        let y = (self.vector.dy * c2 - other.vector.dy * c1)/determinate
+        
+        return CGPoint(x: x, y: y)
     }
     
 }

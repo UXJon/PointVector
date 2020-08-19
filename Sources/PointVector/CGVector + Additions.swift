@@ -70,6 +70,16 @@ public extension CGVector {
         return self.lengthSquared == 1
     }
     
+    ///Returns true if the vector is horizontal
+    var isHorizontal:Bool {
+        return self.dy == 0
+    }
+    
+    ///Returns true if the vector is vertical
+    var isVertical:Bool {
+        return self.dx == 0
+    }
+    
     ///Returns a vector with the same angle as the current vector, but with a length of 1.
     var normalized:CGVector {
         let sqLen = self.lengthSquared

@@ -47,13 +47,23 @@ public struct PointVector {
     }
     
     ///Returns true if the given vector is parallel
-    func isParallel(to vector:PointVector) -> Bool {
+    public func isParallel(to vector:PointVector) -> Bool {
         self.isParallel(to: vector.angle)
     }
     
     ///Returns true if the given angle runs parallel to this vector
-    func isParallel(to angle:Angle) -> Bool {
+    public func isParallel(to angle:Angle) -> Bool {
         return self.angle == angle || self.inverse.angle == angle
+    }
+    
+    ///Returns true if the vector is horizontal
+    public var isHorizontal:Bool {
+        return self.vector.isHorizontal
+    }
+    
+    ///Returns true if the vector is vertical
+    public var isVertical:Bool {
+        return self.vector.isVertical
     }
     
     ///The end point of the vector
@@ -155,6 +165,17 @@ public struct PointVector {
     public func closestPoint(to point:CGPoint) -> CGPoint {
         ///https://forum.unity.com/threads/how-do-i-find-the-closest-point-on-a-line.340058/
         let d = CGVector(start: origin, end: point).dotProduct(vector)
+        return self.point(atDistance: d)
+    }
+    
+    ///The closest point along the vector to the given point
+    ///- Parameter point: A CGPoint
+    ///- Parameter allowInverse: A Bool indicating whether points along the inverse of the vector should be allowed
+    ///- Returns: The CGPoint along the vector which is closest to the given point
+    public func closestPoint(to point:CGPoint, allowInverse:Bool) -> CGPoint {
+        ///https://forum.unity.com/threads/how-do-i-find-the-closest-point-on-a-line.340058/
+        var d = CGVector(start: origin, end: point).dotProduct(vector)
+        if !allowInverse {d = max(d, 0)} //If we don't allow inverse, then the origin is closest
         return self.point(atDistance: d)
     }
     

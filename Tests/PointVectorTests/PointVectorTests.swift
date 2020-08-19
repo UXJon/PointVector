@@ -24,6 +24,21 @@ final class PointVectorTests: XCTestCase {
         XCTAssertEqual(intersect.x, correct.x, accuracy: 0.000001)
         XCTAssertEqual(intersect.y, correct.y, accuracy: 0.000001)
     }
+    
+    func testHalfPlane() {
+        let inPt = CGPoint(x: 1, y: 2)
+        let outPt = CGPoint(x: -2, y: -2)
+        let origin = CGPoint.zero
+        let onPt = CGPoint(x: 1, y: -1) ///Vector on boundary should register as in half plane
+        
+        let halfPlane = PointVector(origin: origin, distantPt: CGPoint(x: 1, y: 1))
+        
+        XCTAssertTrue(inPt.isInHalfPlane(halfPlane))
+        XCTAssertFalse(outPt.isInHalfPlane(halfPlane))
+        XCTAssertTrue(origin.isInHalfPlane(halfPlane))
+        XCTAssertTrue(onPt.isInHalfPlane(halfPlane))
+        
+    }
 
     static var allTests = [
         ("interecting vectors", testPointIntersection),

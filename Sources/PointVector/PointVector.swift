@@ -263,4 +263,30 @@ public struct PointVector {
         return CGPoint(x: x, y: y)
     }
     
+    ///Calculates the points where the vector intersects the circle, if any exist
+    public func pointsIntersectingCircle(origin:CGPoint, radius:CGFloat, allowInverse:Bool = true)->[CGPoint] {
+        let originDist = origin.distance(to: self.origin)
+        if originDist <= radius { ///Ray starts inside the circle
+            let chordCenter = self.closestPoint(to: origin)
+            let d = origin.distance(to: chordCenter)
+            let chordHalfLen = sqrt(radius * radius - (d * d))
+            let centerVec = PointVector(origin: chordCenter, vector: self.vector)
+            let pt = centerVec.point(atDistance: chordHalfLen)
+            if allowInverse {
+                let oppositePt = centerVec.point(atDistance: -chordHalfLen)
+                return [pt,oppositePt]
+            }
+            return [pt]
+        }
+        ///Ray starts outside the circle
+        let closest = self.closestPoint(to: origin, allowInverse: allowInverse)
+        let d = origin.distance(to: closest)
+        guard d <= radius else {return []} ///It doesn't intersect
+        let chordHalfLen = sqrt(radius * radius - (d * d))
+        let centerVec = PointVector(origin: closest, vector: self.vector)
+        let pt1 = centerVec.point(atDistance: chordHalfLen)
+        let pt2 = centerVec.point(atDistance: -chordHalfLen)
+        return [pt1,pt2]
+    }
+    
 }

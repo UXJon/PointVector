@@ -9,6 +9,12 @@ import Foundation
 import CoreGraphics
 
 public extension CGPoint {
+    
+    ///Calculate the distance between two points
+    func distance(to:CGPoint) -> CGFloat {
+        return sqrt(pow(self.x - to.x, 2) + pow(self.y - to.y, 2))
+    }
+    
     ///Returns true if the point lies in the half plane defined in the direction of the given point vector. The boundary is the line running perpendicular to the vector through it's origin point.
     func isInHalfPlane(_ vector:PointVector) -> Bool {
         if vector.isHorizontal {

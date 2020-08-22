@@ -249,6 +249,22 @@ public struct PointVector {
         return (leftPt,rightPt)
     }
     
+    public func firstPointIntersecting(rect:CGRect) -> CGPoint? {
+        if let top = pointIntersecting(y: rect.minY, allowInverse: false) {
+            if top.x >= rect.minX && top.x <= rect.maxX {return top}
+        }
+        if let bot = pointIntersecting(y: rect.maxY, allowInverse: false) {
+            if bot.x >= rect.minX && bot.x <= rect.maxX {return bot}
+        }
+        if let left = pointIntersecting(x: rect.minX, allowInverse: false) {
+            if left.y >= rect.minY && left.y <= rect.maxY {return left}
+        }
+        if let right = pointIntersecting(x: rect.maxX, allowInverse: false) {
+            if right.y >= rect.minY && right.y <= rect.maxY {return right}
+        }
+        return nil
+    }
+    
     ///Calculates the interection point where the lines along the vectors intersect
     public func pointIntersecting(vector other:PointVector) -> CGPoint? {
         let determinate = self.vector.dy * -other.vector.dx - other.vector.dy * (-self.vector.dx)
